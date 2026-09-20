@@ -1,0 +1,187 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import EmbedFacade from '../components/interactive/EmbedFacade';
+import { formatDate } from '../utils/formatters';
+
+interface Props {
+  project: {
+    slug: string;
+    data: {
+      title: string;
+      summary: string;
+      businessQuestion: string;
+      domain: string[];
+      role: string;
+      context: string;
+      tools: string[];
+      dataSource: {
+        name: string;
+        licence: string;
+        url?: string;
+      };
+      outcome: string;
+      limitations: string;
+      links: {
+        repo: string;
+        demo?: string;
+        notebook?: string;
+      };
+      cover: string;
+      coverAlt: string;
+      readMinutes?: number;
+      updated: Date;
+    };
+  };
+  prevProject?: { slug: string; title: string } | null;
+  nextProject?: { slug: string; title: string } | null;
+}
+
+const { project, prevProject, nextProject } = Astro.props;
+const { data } = project;
+---
+
+<BaseLayout
+  title={`${data.title} — Case Study`}
+  description={data.summary}
+  type="article"
+>
+  <article class="py-10 md:py-16">
+    <Container class="max-w-4xl">
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-primary transition-colors">Home</a>
+        <span>/</span>
+        <a href="/projects" class="hover:text-primary transition-colors">Projects</a>
+        <span>/</span>
+        <span class="text-ink font-medium truncate">{data.title}</span>
+      </nav>
+
+      <!-- Case Study Header: Summary Visible Above the Fold (FR-CASE-02) -->
+      <header class="space-y-4 pb-8 border-b border-border">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap gap-1.5">
+            {data.domain.map((dom) => <Badge domain={dom} size="md" />)}
+          </div>
+          <div class="flex items-center gap-4 text-xs text-muted">
+            <span>{data.readMinutes} min read</span>
+            <span>·</span>
+            <span>Updated {formatDate(data.updated)}</span>
+            <button
+              type="button"
+              onclick="window.print()"
+              class="hidden sm:inline-flex items-center gap-1 text-accent hover:underline font-medium no-print"
+              title="Print clean PDF version of case study (FR-CASE-07)"
+            >
+              <span>Print to PDF</span>
+              <span>⎙</span>
+            </button>
+          </div>
+        </div>
+
+        <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold font-serif text-primary leading-tight">
+          {data.title}
+        </h1>
+
+        <!-- Executive Summary Banner (FR-CASE-01, FR-CASE-02) -->
+        <div class="p-4 sm:p-5 bg-surface-alt rounded-lg border-l-4 border-accent space-y-2">
+          <p class="text-xs font-bold uppercase tracking-wider text-accent">
+            Executive Summary & Outcome
+          </p>
+          <p class="text-sm sm:text-base font-medium text-ink leading-relaxed">
+            {data.summary}
+          </p>
+          <p class="text-xs text-muted pt-1">
+            <strong class="text-slate-700">Core Business Question:</strong> {data.businessQuestion}
+          </p>
+        </div>
+
+        <!-- Metadata Strip: Role, Context, Data Source, Links (FR-CASE-03, FR-CASE-04) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 text-xs text-ink">
+          <div class="p-3 rounded bg-white border border-border">
+            <span class="text-muted block font-semibold mb-0.5">Author Role:</span>
+            <span>{data.role}</span>
+          </div>
+
+          <div class="p-3 rounded bg-white border border-border">
+            <span class="text-muted block font-semibold mb-0.5">Data Licence:</span>
+            <span>{data.dataSource.licence} ({data.dataSource.name})</span>
+          </div>
+
+          <div class="p-3 rounded bg-white border border-border">
+            <span class="text-muted block font-semibold mb-0.5">Source Repository:</span>
+            <a
+              href={data.links.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-accent hover:underline font-semibold flex items-center gap-1"
+            >
+              <span>GitHub Codebase</span>
+              <span>↗</span>
+            </a>
+          </div>
+
+          <div class="p-3 rounded bg-white border border-border">
+            <span class="text-muted block font-semibold mb-0.5">Interactive Demo:</span>
+            {data.links.demo ? (
+              <a
+                href={data.links.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent hover:underline font-semibold flex items-center gap-1"
+              >
+                <span>Launch Live Demo</span>
+                <span>↗</span>
+              </a>
+            ) : (
+              <span class="text-slate-400">Not applicable</span>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <!-- Interactive Demo Island if applicable (FR-DEMO-01 to 05) -->
+      {data.links.demo && (
+        <EmbedFacade
+          client:visible
+          title={data.title}
+          demoUrl={data.links.demo}
+          keyFinding={data.outcome}
+          embedType={data.domain.includes('gis') ? 'gis' : data.domain.includes('machine-learning') ? 'ml' : 'bi'}
+        />
+      )}
+
+      <!-- Structured Case Study Content Body -->
+      <div class="mt-8 prose prose-slate max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-accent prose-code:font-mono text-sm sm:text-base leading-relaxed space-y-6">
+        <slot />
+      </div>
+
+      <!-- Previous / Next Navigation (FR-CASE-06) -->
+      <nav class="mt-16 pt-8 border-t border-border grid grid-cols-1 sm:grid-cols-2 gap-4 no-print" aria-label="Adjacent Projects">
+        {prevProject ? (
+          <a
+            href={`/projects/${prevProject.slug}`}
+            class="p-4 rounded border border-border hover:border-accent bg-surface hover:bg-surface-alt transition-colors group text-left"
+          >
+            <span class="text-xs text-muted block mb-1 font-mono">← Previous Case Study</span>
+            <span class="text-sm font-bold text-primary group-hover:text-accent font-serif">{prevProject.title}</span>
+          </a>
+        ) : (
+          <div></div>
+        )}
+
+        {nextProject && (
+          <a
+            href={`/projects/${nextProject.slug}`}
+            class="p-4 rounded border border-border hover:border-accent bg-surface hover:bg-surface-alt transition-colors group text-right sm:col-start-2"
+          >
+            <span class="text-xs text-muted block mb-1 font-mono">Next Case Study →</span>
+            <span class="text-sm font-bold text-primary group-hover:text-accent font-serif">{nextProject.title}</span>
+          </a>
+        )}
+      </nav>
+    </Container>
+  </article>
+</BaseLayout>

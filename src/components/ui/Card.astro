@@ -1,0 +1,25 @@
+---
+interface Props {
+  as?: string;
+  class?: string;
+  hoverEffect?: boolean;
+}
+
+const {
+  as: Element = 'div',
+  class: className = '',
+  hoverEffect = false,
+  ...rest
+} = Astro.props;
+---
+
+<Element
+  class:list={[
+    'bg-surface rounded-lg border border-border p-6 shadow-subtle',
+    hoverEffect && 'card-hover-effect transition-all duration-150',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Element>

@@ -1,0 +1,56 @@
+/* Motion and Animation System - UI-MOT-01 to 05 */
+
+@keyframes fadeInRise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-fade-in-rise {
+  animation: fadeInRise 350ms ease-out forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2s infinite ease-in-out;
+}
+
+/* Card hover lift - UI-MOT */
+.card-hover-effect {
+  transition: transform 150ms ease-in-out, border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 16px -4px rgba(11, 31, 58, 0.08);
+}
+
+/* Respect user's motion preferences (UI-MOT-02) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .card-hover-effect:hover {
+    transform: none !important;
+  }
+}

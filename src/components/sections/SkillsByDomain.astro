@@ -1,0 +1,135 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Card from '../ui/Card.astro';
+import { siteConfig } from '../../content/site';
+
+const skillCategories = [
+  {
+    domain: 'Data Analytics',
+    icon: '📈',
+    description: 'Relational data modeling, cohort analysis, customer lifecycle metrics, and executive business intelligence.',
+    tools: ['SQL (PostgreSQL, BigQuery)', 'Power BI (DAX, Modeling)', 'Tableau Public', 'Excel (Advanced Models)', 'RFM Analysis', 'Star Schema Warehousing'],
+    evidenceProject: 'Retail Customer Churn & Lifetime Value',
+    evidenceLink: '/projects/01-retail-customer-churn-analytics',
+  },
+  {
+    domain: 'Data Science & ML',
+    icon: '🤖',
+    description: 'End-to-end predictive modeling, feature engineering, cross-validation, and production inference pipelines.',
+    tools: ['Python (Pandas, NumPy)', 'Scikit-Learn', 'XGBoost & LightGBM', 'SHAP Explainability', 'FastAPI', 'Optuna Tuning'],
+    evidenceProject: 'Flight Departure Delay Predictor',
+    evidenceLink: '/projects/02-flight-delay-prediction-ml',
+  },
+  {
+    domain: 'GIS & Spatial Analysis',
+    icon: '🌐',
+    description: 'Geospatial vector analysis, network routing graphs, isochrone modeling, and interactive web mapping.',
+    tools: ['PostGIS (Spatial Queries)', 'QGIS 3.x', 'OSMnx & GeoPandas', 'MapLibre GL JS', 'GeoJSON & Shapefiles', 'Spatial Catchment Analysis'],
+    evidenceProject: 'Urban Healthcare Accessibility GIS',
+    evidenceLink: '/projects/03-urban-accessibility-gis',
+  },
+  {
+    domain: 'Applied Statistics',
+    icon: '📊',
+    description: 'Rigorous hypothesis testing, sample size estimation, parametric & non-parametric tests, and survival analysis.',
+    tools: ['Hypothesis Testing (t-test, ANOVA)', 'A/B Test Experimentation', 'Kaplan-Meier Survival Analysis', 'Linear & Logistic Regression', 'Confidence Intervals & Effect Size'],
+    evidenceProject: 'Customer Half-Life Survival Modeling',
+    evidenceLink: '/projects/01-retail-customer-churn-analytics',
+  },
+  {
+    domain: 'Software Engineering',
+    icon: '⚙️',
+    description: 'Production-ready code quality, automated unit testing, version control, and reproducible deployment.',
+    tools: ['Git & GitHub Flow', 'TypeScript & JavaScript', 'HTML5 & Vanilla/Tailwind CSS', 'Docker Containers', 'Linux & Shell Scripting', 'CI/CD Pipelines'],
+    evidenceProject: 'Static Portfolio System & Tests',
+    evidenceLink: 'https://github.com/imanperera',
+  },
+  {
+    domain: 'Enterprise Information Systems',
+    icon: '🏛️',
+    description: 'Business process re-engineering, data governance, privacy compliance, and IT alignment.',
+    tools: ['Entity-Relationship Modeling', 'ETL Data Pipeline Design', 'GDPR / Synthetic Anonymization', 'Software Requirements (IEEE 29148)', 'Agile / Scrum Collaboration'],
+    evidenceProject: 'Portfolio SRS & Traceability Matrix',
+    evidenceLink: '/Portfolio_Website_SRS.md',
+  },
+];
+---
+
+<section id="skills" class="py-16 md:py-24 bg-surface-alt border-b border-border" aria-labelledby="skills-heading">
+  <Container>
+    <SectionHeading
+      kicker="Evidence-Linked Competencies"
+      title="Skills & Tooling by Domain"
+      description="Skills are verified by reproducible project deliverables rather than self-assigned percentage bars. Each competency is mapped to active code, dashboards, or spatial models."
+    />
+
+    <!-- Core Stack Skim Bar (FR-SKILL-03) -->
+    <div class="mb-8 p-4 bg-white rounded-lg border border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-accent">
+          Core Daily Stack:
+        </span>
+        <span class="text-xs text-muted">
+          High-proficiency tools used across coursework & production:
+        </span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        {
+          siteConfig.coreStack.map((tool) => (
+            <span class="text-xs font-medium px-2.5 py-1 bg-teal-50 text-accent rounded border border-teal-200">
+              {tool}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- 6 Domain Category Grid (FR-SKILL-01, FR-SKILL-02) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        skillCategories.map((cat) => (
+          <Card class="flex flex-col justify-between h-full bg-white border-slate-200">
+            <div class="space-y-3">
+              <div class="flex items-center gap-2.5">
+                <span class="text-2xl" aria-hidden="true">{cat.icon}</span>
+                <h3 class="text-lg font-bold font-serif text-primary">
+                  {cat.domain}
+                </h3>
+              </div>
+              <p class="text-xs text-muted leading-relaxed">
+                {cat.description}
+              </p>
+
+              <!-- Tools List -->
+              <div class="pt-2">
+                <ul class="space-y-1 text-xs text-ink">
+                  {cat.tools.map((tool) => (
+                    <li class="flex items-start gap-1.5">
+                      <span class="text-accent font-bold mt-0.5">•</span>
+                      <span>{tool}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <!-- Evidence Cross-Link -->
+            <div class="pt-4 mt-4 border-t border-border">
+              <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">
+                Applied Evidence:
+              </span>
+              <a
+                href={cat.evidenceLink}
+                class="text-xs font-semibold text-accent hover:underline inline-flex items-center gap-1 mt-0.5"
+              >
+                <span>{cat.evidenceProject}</span>
+                <span>→</span>
+              </a>
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </Container>
+</section>

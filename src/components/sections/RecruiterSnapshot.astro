@@ -1,0 +1,128 @@
+---
+import Container from '../ui/Container.astro';
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+import { siteConfig } from '../../content/site';
+---
+
+<section id="snapshot" class="py-12 bg-white" aria-labelledby="snapshot-heading">
+  <Container>
+    <Card class="bg-surface-alt border-slate-300/80 p-6 md:p-8 shadow-card">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-border">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-accent"></span>
+            <span class="text-xs uppercase font-bold tracking-wider text-accent">
+              Quick Recruiter Overview (10-Second Scan)
+            </span>
+          </div>
+          <h2 id="snapshot-heading" class="text-xl sm:text-2xl font-bold font-serif text-primary mt-1">
+            Recruiter Snapshot
+          </h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <Button
+            href={siteConfig.cv.pdfPath}
+            variant="secondary"
+            size="sm"
+            download={siteConfig.cv.fileName}
+            id="snapshot-download-cv"
+          >
+            Download CV (PDF) ↓
+          </Button>
+          <Button
+            href={`mailto:${siteConfig.contact.email}?subject=Internship%20Inquiry%20-%20${encodeURIComponent(siteConfig.name)}`}
+            variant="outline"
+            size="sm"
+          >
+            Direct Email ✉
+          </Button>
+        </div>
+      </div>
+
+      <!-- 4-Column High-Density Grid (FR-HOME-04) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-6 text-sm">
+        <!-- Sector A: Target Roles -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold uppercase tracking-wider text-muted">
+            Target Roles
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            {
+              siteConfig.targetRoles.map((role) => (
+                <span class="inline-block text-xs font-medium px-2 py-1 bg-white border border-border rounded text-ink">
+                  {role}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Sector B: Core Technical Stack -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold uppercase tracking-wider text-muted">
+            Core Stack
+          </p>
+          <ul class="space-y-1 text-xs text-ink">
+            {
+              siteConfig.coreStack.map((tool) => (
+                <li class="flex items-center gap-1.5">
+                  <span class="text-accent font-bold">✓</span>
+                  <span>{tool}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- Sector C: Availability & Location -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold uppercase tracking-wider text-muted">
+            Internship Window
+          </p>
+          <div class="text-xs space-y-1 text-ink">
+            <p class="font-semibold text-emerald-800 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 inline-block">
+              ● {siteConfig.availability.window}
+            </p>
+            <p><span class="text-muted">Duration:</span> {siteConfig.availability.duration}</p>
+            <p><span class="text-muted">Work Mode:</span> {siteConfig.availability.mode}</p>
+            <p><span class="text-muted">Location:</span> {siteConfig.availability.location}</p>
+          </div>
+        </div>
+
+        <!-- Sector D: Academic Standing & Profiles -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold uppercase tracking-wider text-muted">
+            Education & Profiles
+          </p>
+          <div class="text-xs space-y-1.5 text-ink">
+            <div>
+              <p class="font-semibold text-primary">{siteConfig.education.degree}</p>
+              <p class="text-muted">{siteConfig.education.institution}</p>
+              <p class="text-slate-500">{siteConfig.education.expectedGraduation}</p>
+            </div>
+            <div class="flex items-center gap-3 pt-1">
+              <a
+                href={siteConfig.contact.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent font-semibold hover:underline"
+              >
+                LinkedIn ↗
+              </a>
+              <span class="text-border">|</span>
+              <a
+                href={siteConfig.contact.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent font-semibold hover:underline"
+              >
+                GitHub ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+  </Container>
+</section>

@@ -1,0 +1,124 @@
+---
+title: "Predictive Modeling of Commercial Flight Departure Delays"
+summary: "Built an XGBoost classification pipeline predicting >15m flight delays with 83.4% ROC-AUC, enabling ground handling crews to preemptively reassign turnaround gates."
+businessQuestion: "Can pre-departure weather, airport congestion, and inbound aircraft turnaround buffers reliably predict departure delays exceeding 15 minutes at least two hours prior to scheduled departure?"
+domain: ["data-science", "machine-learning"]
+role: "ML Engineer & Data Scientist (Personal Research & Portfolio Project)"
+context: "personal"
+tools: ["Python", "XGBoost", "Scikit-Learn", "FastAPI", "Streamlit", "SHAP", "Optuna"]
+dataSource:
+  name: "Bureau of Transportation Statistics (BTS) Airline On-Time Performance & NOAA Weather Data"
+  licence: "US Public Domain / Open Government Data"
+  url: "https://www.transtats.bts.gov/"
+outcome: "Achieved 0.834 ROC-AUC and 0.76 PR-AUC on 450,000 flight test set; reduced false positives by 22% compared to historical baseline heuristics."
+limitations: "Real-time ATC tactical rerouting data is restricted and could not be incorporated; extreme convective thunderstorms remain unpredictable >4 hours in advance."
+links:
+  repo: "https://github.com/imanperera/flight-delay-ml-prediction"
+  demo: "https://huggingface.co/spaces/imanperera/flight-delay-predictor"
+  notebook: "https://github.com/imanperera/flight-delay-ml-prediction/blob/main/notebooks/model_training_evaluation.ipynb"
+cover: "/projects/thumbs/thumb-ml-prediction.webp"
+coverAlt: "Machine learning ROC curve and SHAP feature importance plot for flight delay predictions"
+featured: true
+readMinutes: 7
+updated: 2026-09-18
+---
+
+## Summary
+
+Flight delays cost the commercial aviation sector over **$30 billion annually** in passenger compensation, wasted crew hours, and inefficient gate utilization. This project created a machine learning classification engine that predicts whether a scheduled flight will experience a departure delay exceeding 15 minutes (the FAA standard threshold).
+
+By fusing national flight schedule records with real-time **NOAA meteorological METAR observations** and historical turnaround buffers across 450,000 domestic US flights, the resulting gradient-boosted pipeline achieved an **ROC-AUC of 0.834** and an **F1-score of 0.74** on unseen test data.
+
+---
+
+## Context and Objective
+
+- **Role:** ML Engineer & Data Scientist (Personal Project)
+- **Objective:** Provide airport operations and ground handling teams with actionable delay risk scores 2 hours prior to pushback to optimize baggage transfer and ramp logistics.
+- **Scope:** 2.4 million flight records across the top 30 US hub airports across seasonal cycles.
+
+---
+
+## Data
+
+| Dimension | Details |
+|---|---|
+| **Raw Sample Size** | 2,410,000 flight records spanning 12 consecutive months |
+| **Features Engineered** | 38 features (METAR wind gusts, visibility, precipitation, inbound aircraft delay, hourly hub congestion index) |
+| **Data Sources** | BTS On-Time Performance database merged with NOAA Weather surface stations via ICAO airport identifiers |
+| **Data Ethics** | Fully open public-domain telemetry; zero proprietary passenger manifests or commercial pricing data utilized |
+
+---
+
+## Method
+
+1. **Feature Engineering & Leakage Prevention:** Built temporal lag features for inbound tail numbers (`tail_number_delay_lag1`) ensuring strict separation between pre-departure signals and post-gate departure events to prevent data leakage.
+2. **Handling Class Imbalance:** Departure delays (>15 min) comprised approximately **19.4%** of flights. Evaluated scale-pos-weight adjustments and focal loss rather than synthetic oversampling to preserve calibrated probability outputs.
+3. **Model Selection & Hyperparameter Tuning:** Benchmarked Logistic Regression, Random Forest, LightGBM, and XGBoost using 5-fold rolling time-series cross-validation. Tuned hyper-parameters (learning rate, tree depth, subsample ratio) via **Optuna** across 100 trials.
+4. **Model Explainability:** Evaluated global and local feature attribution using **SHAP (SHapley Additive exPlanations)** TreeExplainer.
+
+```python
+import xgboost as xgb
+from sklearn.metrics import roc_auc_score, average_precision_score
+
+# Tuned XGBoost Classifier with calibrated class weighting
+model = xgb.XGBClassifier(
+    n_estimators=650,
+    max_depth=6,
+    learning_rate=0.035,
+    subsample=0.85,
+    colsample_bytree=0.8,
+    scale_pos_weight=4.15,
+    tree_method="hist",
+    random_state=42
+)
+
+model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
+y_pred_proba = model.predict_proba(X_test)[:, 1]
+
+roc_score = roc_auc_score(y_test, y_pred_proba)
+pr_score = average_precision_score(y_test, y_pred_proba)
+print(f"Test ROC-AUC: {roc_score:.4f} | PR-AUC: {pr_score:.4f}")
+```
+
+---
+
+## Results & Model Evaluation
+
+- **Performance Metrics:** The model reached **83.4% ROC-AUC** and **76.2% Precision-Recall AUC**, outperforming the existing historical average baseline (61.2% ROC-AUC) by **22.2 percentage points**.
+- **SHAP Key Insights:** The three most influential predictors were:
+  1. *Inbound aircraft arrival delay* (contributing 34% of predictive weight)
+  2. *Origin airport departure runway queue depth* (22% weight)
+  3. *Crosswind component exceeding 20 knots at departure runway* (14% weight)
+- **Calibration:** Brier score was **0.112**, indicating well-calibrated probabilistic output suitable for operational risk thresholds.
+
+---
+
+## Limitations and Ethics
+
+- **Air Traffic Control (ATC) Tactical Constraints:** Real-time ground stop orders and flow control changes issued by the FAA are published dynamically and could not be scraped ahead of the 2-hour prediction horizon.
+- **Regional Bias:** The training data was focused on top-30 primary hub airports; generalization to secondary regional aerodromes requires additional domain adaptation.
+
+---
+
+## Recommendations & Next Steps
+
+1. **Deploy Microservice Endpoint:** Containerize the pipeline via Docker and expose predictions as a low-latency **FastAPI** service.
+2. **Dynamic Risk-Tier Notifications:** Set alert thresholds: flights with departure delay probability > 65% trigger an automated reassignment of ground baggage handling personnel.
+3. **Future Extension:** Ingest live ADS-B flight transponder telemetry to update probability estimates continuously during cruise.
+
+---
+
+## Tools Used
+
+- **Languages & Frameworks:** Python 3.11, XGBoost, Scikit-Learn, Pandas, NumPy
+- **Optimization & Explainability:** Optuna, SHAP, Matplotlib, Seaborn
+- **Deployment & Prototyping:** Streamlit, Hugging Face Spaces, Docker
+
+---
+
+## Reproducibility & Links
+
+- **Source Code & Model Weights:** [GitHub Repository](https://github.com/imanperera/flight-delay-ml-prediction)
+- **Live Streamlit Inference App:** [Hugging Face Space Demo](https://huggingface.co/spaces/imanperera/flight-delay-predictor)
+- **Jupyter Notebook:** [Training and Cross-Validation Pipeline](https://github.com/imanperera/flight-delay-ml-prediction/blob/main/notebooks/model_training_evaluation.ipynb)

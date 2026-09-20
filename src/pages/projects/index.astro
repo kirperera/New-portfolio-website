@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import ProjectFilter from '../../components/interactive/ProjectFilter';
+
+const allProjects = await getCollection('projects');
+
+// Sort featured projects first, then by date descending (FR-PROJ-04)
+const sortedProjects = allProjects
+  .sort((a, b) => {
+    if (a.data.featured && !b.data.featured) return -1;
+    if (!a.data.featured && b.data.featured) return 1;
+    return b.data.updated.getTime() - a.data.updated.getTime();
+  })
+  .map((p) => ({
+    slug: p.slug,
+    title: p.data.title,
+    summary: p.data.summary,
+    outcome: p.data.outcome,
+    domain: p.data.domain,
+    tools: p.data.tools,
+    role: p.data.role,
+    featured: p.data.featured,
+    readMinutes: p.data.readMinutes,
+    repoUrl: p.data.links.repo,
+  }));
+---
+
+<BaseLayout
+  title="Project Case Studies & Technical Work"
+  description="Filterable case studies across Data Analytics, Machine Learning, Statistics, and GIS with reproducible code."
+  currentPath="/projects"
+>
+  <div class="py-12 md:py-16">
+    <Container>
+      <SectionHeading
+        kicker="Portfolio Evidence"
+        title="Technical Projects & Case Studies"
+        description="Every project demonstrates an end-to-end analytical workflow: starting with a concrete business or research question, transparent data handling, rigorous methods, and measurable impact."
+      />
+
+      <ProjectFilter client:load projects={sortedProjects} />
+    </Container>
+  </div>
+</BaseLayout>

@@ -1,0 +1,170 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import { siteConfig } from '../../content/site';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border transition-colors">
+  <Container class="flex items-center justify-between h-16">
+    <!-- Brand / Monogram -->
+    <a
+      href="/"
+      class="flex items-center gap-2 text-primary font-bold text-lg tracking-tight hover:text-accent transition-colors group focus-visible:outline-none"
+      aria-label={`${siteConfig.name} Home`}
+    >
+      <span class="w-9 h-9 rounded bg-primary text-white flex items-center justify-center font-serif text-sm font-semibold group-hover:bg-accent transition-colors">
+        {siteConfig.monogram}
+      </span>
+      <span class="hidden sm:inline font-sans text-base font-semibold text-primary">
+        {siteConfig.name}
+      </span>
+    </a>
+
+    <!-- Desktop Navigation (<= 6 items per FR-NAV-01) -->
+    <nav class="hidden md:flex items-center gap-6" aria-label="Main Navigation">
+      {
+        siteConfig.navLinks.map((link) => {
+          const isActive = currentPath === link.href;
+          return (
+            <a
+              href={link.href}
+              class:list={[
+                'text-sm font-medium transition-colors duration-150 py-1 border-b-2',
+                isActive
+                  ? 'text-accent border-accent'
+                  : 'text-muted hover:text-primary border-transparent hover:border-border',
+              ]}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <!-- Header Actions (CV Button + Mobile Toggle) -->
+    <div class="flex items-center gap-3">
+      <Button
+        href={siteConfig.cv.pdfPath}
+        variant="secondary"
+        size="sm"
+        download={siteConfig.cv.fileName}
+        id="header-cv-button"
+        class="hidden sm:inline-flex"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="w-4 h-4 shrink-0"
+          aria-hidden="true"
+        >
+          <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
+          <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+        </svg>
+        <span>Download CV</span>
+      </Button>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button
+        type="button"
+        class="md:hidden inline-flex items-center justify-center p-2 rounded text-ink hover:text-primary hover:bg-surface-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        id="mobile-menu-toggle"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Toggle navigation menu"
+      >
+        <svg
+          class="w-6 h-6"
+          id="menu-icon-bars"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.75"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <svg
+          class="w-6 h-6 hidden"
+          id="menu-icon-close"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.75"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </Container>
+
+  <!-- Mobile Dropdown Menu (FR-NAV-03) -->
+  <div
+    class="md:hidden hidden border-b border-border bg-white px-4 pt-3 pb-6 space-y-3"
+    id="mobile-menu"
+  >
+    <nav class="flex flex-col space-y-2" aria-label="Mobile Navigation">
+      {
+        siteConfig.navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-base font-medium text-ink hover:text-accent py-2 px-3 rounded hover:bg-surface-alt min-h-[44px] flex items-center"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="pt-2 border-t border-border">
+      <Button
+        href={siteConfig.cv.pdfPath}
+        variant="secondary"
+        size="md"
+        download={siteConfig.cv.fileName}
+        class="w-full justify-center"
+      >
+        Download CV (PDF)
+      </Button>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Accessible mobile menu toggle logic
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconBars = document.getElementById('menu-icon-bars');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  if (toggleBtn && mobileMenu && iconBars && iconClose) {
+    toggleBtn.addEventListener('click', () => {
+      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+      mobileMenu.classList.toggle('hidden');
+      iconBars.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+    });
+
+    // Close menu when clicking any mobile link
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.add('hidden');
+        iconBars.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
+    });
+  }
+</script>

@@ -1,0 +1,76 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import SkipLink from '../components/layout/SkipLink.astro';
+import { generateSEO, type SEOProps } from '../utils/seo';
+import '../styles/global.css';
+
+interface Props extends SEOProps {
+  currentPath?: string;
+  hideFooter?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonicalURL,
+  image,
+  type = 'website',
+  currentPath = '/',
+  hideFooter = false,
+} = Astro.props;
+
+const seo = generateSEO({
+  title,
+  description,
+  canonicalURL,
+  image,
+  type,
+});
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags - FR-SEO-01 -->
+    <title>{seo.metaTitle}</title>
+    <meta name="description" content={seo.metaDescription} />
+    <link rel="canonical" href={seo.canonical} />
+
+    <!-- Open Graph / LinkedIn / Facebook - FR-SEO-05 -->
+    <meta property="og:type" content={seo.type} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:title" content={seo.metaTitle} />
+    <meta property="og:description" content={seo.metaDescription} />
+    <meta property="og:image" content={seo.ogImage} />
+    <meta property="og:site_name" content="Iman Perera Portfolio" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seo.metaTitle} />
+    <meta name="twitter:description" content={seo.metaDescription} />
+    <meta name="twitter:image" content={seo.ogImage} />
+
+    <!-- Schema.org Person JSON-LD - FR-SEO-03 -->
+    <script type="application/ld+json" set:html={seo.jsonLdPerson} />
+
+    <!-- Core Font Preconnects (Swap Font Loading - UI-TYP-02) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body class="min-h-screen flex flex-col bg-surface text-ink antialiased">
+    <SkipLink />
+    <Header currentPath={currentPath} />
+
+    <main id="main-content" class="flex-1 focus:outline-none" tabindex="-1">
+      <slot />
+    </main>
+
+    {!hideFooter && <Footer />}
+  </body>
+</html>

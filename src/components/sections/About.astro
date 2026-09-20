@@ -1,0 +1,45 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+import { siteConfig } from '../../content/site';
+---
+
+<section id="about" class="py-16 md:py-24 bg-surface-alt border-b border-border" aria-labelledby="about-heading">
+  <Container>
+    <div class="max-w-3xl mx-auto space-y-8">
+      <SectionHeading
+        kicker="Background & Professional Intent"
+        title="About Me"
+        align="center"
+        class="text-center mx-auto mb-6"
+      />
+
+      <!-- 150-200 Word Concise Statement (FR-ABOUT-01, FR-ABOUT-02) -->
+      <Card class="bg-white p-8 md:p-10 shadow-subtle border-slate-200">
+        <div class="space-y-4 text-base text-ink leading-relaxed prose-reading mx-auto">
+          <p>
+            I am an Information Systems undergraduate specializing in the intersection of <strong class="text-primary font-semibold">data analytics, predictive modeling, and spatial intelligence</strong>. Rather than viewing data merely as static spreadsheets, I focus on building reproducible pipelines that answer concrete business and operational questions.
+          </p>
+          <p>
+            My coursework and independent projects center on translating messy datasets into actionable intelligence. Whether writing complex windowed SQL queries in PostgreSQL, optimizing gradient-boosted classifiers in Python, or mapping transit accessibility networks in PostGIS, I emphasize statistical rigor, honest reporting of model limitations, and clean code documentation.
+          </p>
+          <p>
+            I am seeking a <strong class="text-primary font-semibold">3 to 6-month internship</strong> within an analytical, data science, or engineering team. What I bring to a team is an eagerness to master complex workflows quickly, strong engineering hygiene, and a disciplined habit of verifying assumptions before drawing conclusions.
+          </p>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-muted">
+            <span class="font-semibold text-ink">Availability Window:</span> {siteConfig.availability.window} ({siteConfig.availability.duration})
+          </div>
+          <Button href="#contact" variant="primary" size="sm">
+            <span>Connect for an Interview</span>
+            <span class="ml-1">→</span>
+          </Button>
+        </div>
+      </Card>
+    </div>
+  </Container>
+</section>

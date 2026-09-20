@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+import { siteConfig } from '../content/site';
+---
+
+<BaseLayout
+  title={`Résumé — ${siteConfig.name}`}
+  description={`Single-column, ATS-friendly curriculum vitae for ${siteConfig.name}, targeting Data Analytics, Data Science, and GIS internships.`}
+  currentPath="/resume"
+>
+  <div class="py-12 md:py-16 bg-surface-alt border-b border-border">
+    <Container class="max-w-3xl">
+      <!-- Actions Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-border no-print">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-accent">
+            Curriculum Vitae
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-bold font-serif text-primary mt-1">
+            {siteConfig.name} — Résumé
+          </h1>
+          <p class="text-xs text-muted mt-1">
+            Last updated: {siteConfig.cv.lastUpdated} · ATS-Optimized Single-Column Format
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <Button
+            href={siteConfig.cv.pdfPath}
+            variant="primary"
+            size="md"
+            download={siteConfig.cv.fileName}
+            id="resume-page-download"
+          >
+            <span>Download PDF CV</span>
+            <span class="ml-1">↓</span>
+          </Button>
+          <button
+            type="button"
+            onclick="window.print()"
+            class="px-4 py-2 border border-slate-300 rounded text-xs font-semibold text-ink hover:bg-white transition-colors"
+          >
+            Print ⎙
+          </button>
+        </div>
+      </div>
+
+      <!-- Resume Document Container (Strict Single Column for ATS - FR-CV-01) -->
+      <div class="bg-white p-8 sm:p-12 rounded-lg border border-slate-300 shadow-sm space-y-8 text-sm text-ink leading-relaxed">
+        <!-- Header -->
+        <header class="text-center space-y-2 pb-6 border-b border-slate-200">
+          <h2 class="text-2xl sm:text-3xl font-bold font-serif text-primary tracking-tight">
+            {siteConfig.name}
+          </h2>
+          <p class="text-sm font-medium text-slate-700">
+            {siteConfig.positioningLine}
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4 text-xs text-muted pt-1">
+            <a href={`mailto:${siteConfig.contact.email}`} class="hover:underline">
+              {siteConfig.contact.email}
+            </a>
+            <span>•</span>
+            <a href={siteConfig.contact.linkedin} target="_blank" rel="noopener noreferrer" class="hover:underline">
+              LinkedIn
+            </a>
+            <span>•</span>
+            <a href={siteConfig.contact.github} target="_blank" rel="noopener noreferrer" class="hover:underline">
+              GitHub
+            </a>
+            <span>•</span>
+            <span>{siteConfig.availability.location}</span>
+          </div>
+        </header>
+
+        <!-- Section 1: Education -->
+        <section class="space-y-3">
+          <h3 class="text-xs uppercase tracking-wider font-bold text-primary border-b border-slate-200 pb-1">
+            Education
+          </h3>
+          <div>
+            <div class="flex items-baseline justify-between">
+              <strong class="text-sm text-primary font-bold">{siteConfig.education.degree}</strong>
+              <span class="text-xs text-muted font-mono">{siteConfig.education.expectedGraduation}</span>
+            </div>
+            <p class="text-xs text-slate-600">{siteConfig.education.institution}</p>
+            <p class="text-xs text-muted mt-1">
+              <strong>Core Coursework:</strong> {siteConfig.education.relevantCoursework.join(', ')}
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 2: Technical Competencies -->
+        <section class="space-y-3">
+          <h3 class="text-xs uppercase tracking-wider font-bold text-primary border-b border-slate-200 pb-1">
+            Technical Skills & Tools
+          </h3>
+          <ul class="space-y-1.5 text-xs text-slate-700">
+            <li>
+              <strong>Data Analytics & BI:</strong> SQL (PostgreSQL, BigQuery), Power BI (DAX), Tableau, Excel (Advanced), Star Schema Dimensional Modeling.
+            </li>
+            <li>
+              <strong>Data Science & Machine Learning:</strong> Python (Pandas, NumPy, Scikit-Learn, XGBoost), SHAP Explainability, Streamlit, Optuna.
+            </li>
+            <li>
+              <strong>Geospatial Analysis (GIS):</strong> PostGIS, QGIS, OSMnx, MapLibre GL, Spatial Isochrones, Vector Network Analysis.
+            </li>
+            <li>
+              <strong>Software & Tooling:</strong> Git, GitHub Actions, TypeScript, Astro, Linux, Docker, REST APIs.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Section 3: Flagship Projects -->
+        <section class="space-y-4">
+          <h3 class="text-xs uppercase tracking-wider font-bold text-primary border-b border-slate-200 pb-1">
+            Key Applied Projects
+          </h3>
+
+          <div class="space-y-1">
+            <div class="flex items-baseline justify-between">
+              <strong class="text-sm text-primary font-bold">Retail Customer Churn & Lifetime Value Analysis</strong>
+              <span class="text-xs text-muted font-mono">SQL · Power BI · Python</span>
+            </div>
+            <p class="text-xs text-slate-700">
+              Analyzed 125K customer transactions; derived windowed RFM velocity metrics and Kaplan-Meier survival curves in PostgreSQL. Delivered an executive Power BI dashboard isolating 3 cancellation triggers, identifying $184K in at-risk ARR.
+            </p>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-baseline justify-between">
+              <strong class="text-sm text-primary font-bold">Predictive Commercial Flight Delay Classification Engine</strong>
+              <span class="text-xs text-muted font-mono">Python · XGBoost · Streamlit</span>
+            </div>
+            <p class="text-xs text-slate-700">
+              Engineered a gradient-boosted classification pipeline across 450K flights merged with NOAA METAR weather feeds; achieved 83.4% ROC-AUC. Deployed live interactive model card and inference space on Hugging Face.
+            </p>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-baseline justify-between">
+              <strong class="text-sm text-primary font-bold">Metropolitan Healthcare Transit Accessibility Analysis</strong>
+              <span class="text-xs text-muted font-mono">PostGIS · OSMnx · MapLibre</span>
+            </div>
+            <p class="text-xs text-slate-700">
+              Modeled 15-minute multi-modal pedestrian and transit isochrones across 180 census tracts; discovered healthcare coverage gaps affecting 42K residents. Proposed 3 optimized feeder routes in PostGIS that reduced average transit time by 63%.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 4: Experience & Leadership -->
+        <section class="space-y-3">
+          <h3 class="text-xs uppercase tracking-wider font-bold text-primary border-b border-slate-200 pb-1">
+            Leadership & Campus Activities
+          </h3>
+          <div class="space-y-2">
+            <div>
+              <div class="flex items-baseline justify-between">
+                <strong class="text-xs font-bold text-slate-800">Student Researcher (Spatial Analytics)</strong>
+                <span class="text-xs text-muted font-mono">2025 – Present</span>
+              </div>
+              <p class="text-xs text-slate-600">Assisting faculty research in urban health access equity using PostGIS and Python automated hygiene scripts.</p>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between">
+                <strong class="text-xs font-bold text-slate-800">Peer Workshop Lead (SQL & Python Fundamentals)</strong>
+                <span class="text-xs text-muted font-mono">2024 – 2025</span>
+              </div>
+              <p class="text-xs text-slate-600">Conducted hands-on technical workshops on relational modeling and EDA for 120+ computing undergraduates.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </Container>
+  </div>
+</BaseLayout>

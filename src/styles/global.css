@@ -1,0 +1,76 @@
+@import './tokens.css';
+@import './typography.css';
+@import './animations.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  /* Accessible Focus Rings - NFR-A11Y-02 */
+  :focus-visible {
+    outline: 2px solid var(--color-accent) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Skip Link styling */
+  .skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 9999;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    transition: top 150ms ease-in-out;
+  }
+
+  .skip-to-content:focus {
+    top: 1rem;
+  }
+}
+
+@layer utilities {
+  .bg-surface-alt {
+    background-color: var(--color-surface-alt);
+  }
+  
+  .border-subtle {
+    border-color: var(--color-border);
+  }
+}
+
+/* Print Stylesheet for ATS CV & Case Studies - FR-CASE-07 */
+@media print {
+  header,
+  footer,
+  .no-print,
+  button,
+  .mobile-menu {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: #000000 !important;
+  }
+
+  .card-hover-effect {
+    box-shadow: none !important;
+    border: 1px solid #cccccc !important;
+  }
+}

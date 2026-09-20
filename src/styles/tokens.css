@@ -1,0 +1,50 @@
+:root {
+  /* Corporate Palette (60% Neutral / 30% Navy / 10% Accent) - UI-COL-01 */
+  --color-primary: #0B1F3A;
+  --color-primary-dark: #071527;
+  --color-primary-light: #132E54;
+  
+  --color-accent: #0E7C86;
+  --color-accent-hover: #0A5C64;
+  --color-accent-subtle: #E6F4F5;
+  --color-accent-focus: rgba(14, 124, 134, 0.4);
+
+  --color-ink: #1F2937;
+  --color-ink-soft: #374151;
+  --color-muted: #475569;
+
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F5F7FA;
+  --color-border: #E2E8F0;
+
+  --color-success: #15803D;
+  --color-success-bg: #F0FDF4;
+  --color-danger: #B91C1C;
+  --color-danger-bg: #FEF2F2;
+
+  /* Typography Scale - UI-TYP-03, UI-TYP-04 */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+
+  --line-height-base: 1.6;
+  --line-height-heading: 1.25;
+
+  /* Layout & Spacing Units - UI-LAY-01 */
+  --max-content-width: 1120px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Motion Budgets - UI-MOT-01 */
+  --transition-fast: 150ms ease-in-out;
+  --transition-medium: 250ms ease-in-out;
+  --transition-reveal: 350ms ease-out;
+}

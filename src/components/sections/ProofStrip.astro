@@ -1,0 +1,61 @@
+---
+import Container from '../ui/Container.astro';
+import { siteConfig } from '../../content/site';
+---
+
+<div class="bg-white border-b border-border py-4" aria-label="Verifiable Credential Proof Strip">
+  <Container>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs text-muted">
+      <!-- Item 1: Degree -->
+      <div class="flex items-center gap-2.5">
+        <span class="w-7 h-7 rounded bg-surface-alt border border-border flex items-center justify-center text-primary font-bold shrink-0">
+          🎓
+        </span>
+        <div>
+          <span class="block font-semibold text-ink">{siteConfig.education.degree}</span>
+          <span class="text-slate-500">{siteConfig.education.expectedGraduation}</span>
+        </div>
+      </div>
+
+      <!-- Item 2: Target Domains -->
+      <div class="flex items-center gap-2.5">
+        <span class="w-7 h-7 rounded bg-surface-alt border border-border flex items-center justify-center text-accent font-bold shrink-0">
+          📊
+        </span>
+        <div>
+          <span class="block font-semibold text-ink">Analytics & ML Focus</span>
+          <span class="text-slate-500">End-to-end evidence</span>
+        </div>
+      </div>
+
+      <!-- Item 3: GIS & Spatial -->
+      <div class="flex items-center gap-2.5">
+        <span class="w-7 h-7 rounded bg-surface-alt border border-border flex items-center justify-center text-emerald-600 font-bold shrink-0">
+          🗺️
+        </span>
+        <div>
+          <span class="block font-semibold text-ink">GIS & Spatial Analysis</span>
+          <span class="text-slate-500">PostGIS, MapLibre, QGIS</span>
+        </div>
+      </div>
+
+      <!-- Item 4: Verified Codebase -->
+      <div class="flex items-center gap-2.5">
+        <span class="w-7 h-7 rounded bg-surface-alt border border-border flex items-center justify-center text-slate-800 font-bold shrink-0">
+          💻
+        </span>
+        <div>
+          <a
+            href={siteConfig.contact.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block font-semibold text-accent hover:underline"
+          >
+            Public Repositories ↗
+          </a>
+          <span class="text-slate-500">Reproducible code & data</span>
+        </div>
+      </div>
+    </div>
+  </Container>
+</div>

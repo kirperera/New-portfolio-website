@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import ProofStrip from '../components/sections/ProofStrip.astro';
+import RecruiterSnapshot from '../components/sections/RecruiterSnapshot.astro';
+import FeaturedProjects from '../components/sections/FeaturedProjects.astro';
+import SkillsByDomain from '../components/sections/SkillsByDomain.astro';
+import Timeline from '../components/sections/Timeline.astro';
+import About from '../components/sections/About.astro';
+import ContactCTA from '../components/sections/ContactCTA.astro';
+import { siteConfig } from '../content/site';
+---
+
+<BaseLayout
+  title={`${siteConfig.name} — ${siteConfig.positioningLine}`}
+  description={siteConfig.valueProposition}
+  currentPath="/"
+>
+  <!-- Sector 2: Hero (Who, What, When) - FR-HOME-01, FR-HOME-02, FR-HOME-03 -->
+  <Hero />
+
+  <!-- Sector 2.5: Verifiable Proof Strip - FR-HOME-06 -->
+  <ProofStrip />
+
+  <!-- Sector 3: Recruiter Snapshot (10-Second Test) - FR-HOME-04, SM-01 -->
+  <RecruiterSnapshot />
+
+  <!-- Sector 4: Featured Flagship Projects - FR-HOME-05 -->
+  <FeaturedProjects />
+
+  <!-- Sector 5: Skills by Domain - FR-SKILL-01, FR-SKILL-02 -->
+  <SkillsByDomain />
+
+  <!-- Sector 6: Education and Experience - FR-EXP-01, FR-EXP-02, FR-EXP-03 -->
+  <Timeline />
+
+  <!-- Sector 7: About - FR-ABOUT-01, FR-ABOUT-02 -->
+  <About />
+
+  <!-- Sector 8: Contact & Conversion - FR-CONT-01, FR-CONT-03 -->
+  <ContactCTA />
+</BaseLayout>

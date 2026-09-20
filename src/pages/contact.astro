@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ContactForm from '../components/interactive/ContactForm';
+import { siteConfig } from '../content/site';
+---
+
+<BaseLayout
+  title={`Contact & Internship Inquiry — ${siteConfig.name}`}
+  description={`Reach out to ${siteConfig.name} for internship opportunities across Data Analytics, Data Science, Machine Learning, and GIS.`}
+  currentPath="/contact"
+>
+  <div class="py-12 md:py-20 bg-surface-alt">
+    <Container class="max-w-4xl">
+      <SectionHeading
+        kicker="Direct Outreach"
+        title="Contact & Internship Inquiry"
+        description="Whether you have an internship opening, want to review reproducible project code, or require further academic verification, please get in touch."
+      />
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Direct Details (5 cols) -->
+        <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+          <h3 class="text-base font-bold font-serif text-primary">
+            Direct Communication Channels
+          </h3>
+
+          <div class="space-y-4 text-xs">
+            <div>
+              <span class="text-slate-400 block uppercase tracking-wider font-semibold">Email</span>
+              <a
+                href={`mailto:${siteConfig.contact.email}`}
+                class="text-accent hover:underline font-semibold text-sm"
+              >
+                {siteConfig.contact.email}
+              </a>
+            </div>
+
+            <div>
+              <span class="text-slate-400 block uppercase tracking-wider font-semibold">LinkedIn</span>
+              <a
+                href={siteConfig.contact.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent hover:underline font-semibold text-sm"
+              >
+                linkedin.com/in/imanperera ↗
+              </a>
+            </div>
+
+            <div>
+              <span class="text-slate-400 block uppercase tracking-wider font-semibold">GitHub Profile</span>
+              <a
+                href={siteConfig.contact.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent hover:underline font-semibold text-sm"
+              >
+                github.com/imanperera ↗
+              </a>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100">
+              <span class="text-slate-400 block uppercase tracking-wider font-semibold mb-1">Availability Window</span>
+              <p class="text-ink font-medium">
+                {siteConfig.availability.window} ({siteConfig.availability.duration})
+              </p>
+              <p class="text-slate-500">
+                Mode: {siteConfig.availability.mode}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form (7 cols) -->
+        <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm">
+          <h3 class="text-base font-bold font-serif text-primary mb-2">
+            Send a Message
+          </h3>
+          <p class="text-xs text-muted mb-6">
+            Spam-protected web form. All inquiries are delivered directly to my personal inbox.
+          </p>
+          <ContactForm client:load />
+        </div>
+      </div>
+    </Container>
+  </div>
+</BaseLayout>

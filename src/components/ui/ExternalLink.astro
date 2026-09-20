@@ -1,0 +1,50 @@
+---
+interface Props {
+  href: string;
+  class?: string;
+  id?: string;
+  showIcon?: boolean;
+}
+
+const {
+  href,
+  class: className = '',
+  id,
+  showIcon = true,
+  ...rest
+} = Astro.props;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[
+    'inline-flex items-center gap-1 text-accent hover:text-accent-hover font-medium underline underline-offset-4 decoration-accent/40 hover:decoration-accent transition-colors duration-150',
+    className,
+  ]}
+  id={id}
+  {...rest}
+>
+  <slot />
+  {showIcon && (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      class="w-3.5 h-3.5 shrink-0 opacity-70"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
+        clip-rule="evenodd"
+      />
+      <path
+        fill-rule="evenodd"
+        d="M6.194 12.753a.75.75 0 001.06 1.06l7.996-7.996V8.25a.75.75 0 001.5 0V4.25a.75.75 0 00-.75-.75H11.75a.75.75 0 000 1.5h2.437l-7.993 7.993z"
+        clip-rule="evenodd"
+      />
+    </svg>
+  )}
+</a>

@@ -1,0 +1,45 @@
+---
+import { formatDomainLabel, getDomainBadgeClasses } from '../../utils/formatters';
+
+interface Props {
+  domain?: string;
+  variant?: 'default' | 'neutral' | 'outline' | 'accent';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const {
+  domain,
+  variant = 'default',
+  size = 'sm',
+  class: className = '',
+} = Astro.props;
+
+const sizeStyles = {
+  sm: 'text-xs px-2.5 py-0.5',
+  md: 'text-sm px-3 py-1',
+};
+
+let colorStyles = 'bg-surface-alt text-muted border border-border';
+
+if (domain) {
+  colorStyles = getDomainBadgeClasses(domain);
+} else if (variant === 'accent') {
+  colorStyles = 'bg-teal-50 text-accent font-medium border border-teal-200';
+} else if (variant === 'outline') {
+  colorStyles = 'bg-transparent text-ink border border-border';
+} else if (variant === 'neutral') {
+  colorStyles = 'bg-slate-100 text-slate-700 border border-slate-200';
+}
+---
+
+<span
+  class:list={[
+    'inline-flex items-center font-medium rounded-full border',
+    sizeStyles[size],
+    colorStyles,
+    className,
+  ]}
+>
+  {domain ? formatDomainLabel(domain) : <slot />}
+</span>

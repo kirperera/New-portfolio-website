@@ -1,0 +1,157 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Card from '../ui/Card.astro';
+import { siteConfig } from '../../content/site';
+
+const academicAchievements = [
+  {
+    role: 'Student Researcher / Data Analyst',
+    organization: 'Department of Information Systems & Analytics',
+    period: '2025 – Present',
+    description: 'Assisting faculty research in spatial analytics and healthcare access equity. Preprocessed 500,000+ spatial coordinates using PostGIS and automated data hygiene pipelines in Python.',
+  },
+  {
+    role: 'Peer Mentor & Workshop Lead (SQL & Python)',
+    organization: 'University Computing Society',
+    period: '2024 – 2025',
+    description: 'Organized and conducted practical coding workshops on Relational Database Design, SQL query optimization, and Pandas EDA for 120+ first- and second-year undergraduates.',
+  },
+];
+
+const certifications = [
+  {
+    title: 'PostgreSQL Database Administration & SQL Optimization',
+    issuer: 'Accredited Database Certification',
+    date: '2025',
+    credentialId: 'CRED-SQL-8924',
+    url: 'https://github.com/imanperera',
+  },
+  {
+    title: 'Machine Learning Specialization',
+    issuer: 'DeepLearning.AI / Coursera',
+    date: '2025',
+    credentialId: 'CRED-ML-5412',
+    url: 'https://github.com/imanperera',
+  },
+  {
+    title: 'Spatial Data Science and Web GIS',
+    issuer: 'Geospatial Training Authority',
+    date: '2024',
+    credentialId: 'CRED-GIS-1093',
+    url: 'https://github.com/imanperera',
+  },
+];
+---
+
+<section id="experience" class="py-16 md:py-24 bg-white border-b border-border" aria-labelledby="experience-heading">
+  <Container>
+    <SectionHeading
+      kicker="Academic Credibility & Background"
+      title="Education & Experience"
+      description="Foundational coursework, active academic research initiatives, and verified technical credentials."
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Col 1 & 2: Degree and Experience Timeline -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Education Card (FR-EXP-01) -->
+        <Card class="bg-surface-alt border-slate-300/80 p-6 md:p-8">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-accent">
+                Primary Education
+              </span>
+              <h3 class="text-xl font-bold font-serif text-primary mt-1">
+                {siteConfig.education.degree}
+              </h3>
+              <p class="text-sm font-medium text-ink-soft">
+                {siteConfig.education.institution}
+              </p>
+            </div>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-white border border-border text-ink shrink-0">
+              {siteConfig.education.expectedGraduation}
+            </span>
+          </div>
+
+          <!-- Coursework -->
+          <div class="mt-6 pt-6 border-t border-border">
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">
+              Relevant Rigorous Coursework:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-ink">
+              {
+                siteConfig.education.relevantCoursework.map((course) => (
+                  <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                    <span>{course}</span>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </Card>
+
+        <!-- Experience Items (FR-EXP-02) -->
+        <div class="space-y-4">
+          <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500">
+            Leadership & Campus Initiatives
+          </h4>
+          <div class="space-y-4">
+            {
+              academicAchievements.map((item) => (
+                <div class="p-5 rounded-lg border border-border bg-white hover:border-slate-300 transition-colors">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                    <h5 class="text-base font-bold text-primary">{item.role}</h5>
+                    <span class="text-xs text-muted font-mono">{item.period}</span>
+                  </div>
+                  <p class="text-xs font-medium text-accent mb-2">{item.organization}</p>
+                  <p class="text-xs text-muted leading-relaxed">{item.description}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 3: Certifications & Verification Links (FR-EXP-03) -->
+      <div class="space-y-6">
+        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500">
+          Verified Certifications
+        </h4>
+        <div class="space-y-4">
+          {
+            certifications.map((cert) => (
+              <Card class="bg-white border-slate-200 p-5 space-y-3">
+                <div>
+                  <h5 class="text-sm font-bold text-primary leading-snug">
+                    {cert.title}
+                  </h5>
+                  <p class="text-xs text-muted mt-0.5">{cert.issuer}</p>
+                </div>
+                <div class="flex items-center justify-between text-xs pt-2 border-t border-border">
+                  <span class="text-slate-500 font-mono">Issued {cert.date}</span>
+                  <a
+                    href={cert.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-accent hover:underline font-medium inline-flex items-center gap-1"
+                  >
+                    <span>Verify</span>
+                    <span>↗</span>
+                  </a>
+                </div>
+              </Card>
+            ))
+          }
+        </div>
+
+        <!-- Career Advisor Notice -->
+        <div class="p-4 bg-surface-alt rounded-lg border border-border text-xs text-muted leading-relaxed">
+          <span class="font-semibold text-primary block mb-1">Academic References:</span>
+          Letters of recommendation and verified degree transcripts available upon request during formal interview stages.
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

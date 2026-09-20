@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://imanperera.github.io/sitemap-index.xml
